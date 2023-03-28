@@ -3,9 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Mail\SendOtp;
 use App\Models\Company;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\Redirect;
 
 class CompanyController extends Controller
 {
@@ -30,13 +34,49 @@ class CompanyController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(Request $request):RedirectResponse
     {
+        $request->validate([
+            'commercial_name'    => 'required|min:3|max:60',
+            'company_name'       => 'required|min:3|max:60',
+            'email'              => 'required|email',
+            'indicatif'          => 'required',
+            'phone'              => 'required|min:6|max:20',
+            'country'            => 'required|min:2|max:30',
+            'city'               => 'required|min:2|max:30',
+            'address'            => 'required|min:2|max:100',
+            'patente'            => 'required|min:2|max:20',
+            'registre_commerce'  => 'required|min:2|max:30',
+            'identifiant_fiscal' => 'required|min:2|max:30',
+            'ice'                => 'required|min:2|max:30',
+            'cnss'               => 'required|min:2|max:30',
+            'logo'               => 'required|mimes:jpg,bmp,png',
+            'status'             => 'required|mimes:jpg,bmp,png'
+        ]);
         $user = new User();
-        $user->email = $request->input('email');
-        $user->password = $request->input('password');
-        $user->type = 0;
-        $user->otp = 0;
+        $user->name     = $request->input('commercial_name');
+        if($request->input('email') == $request->input('email_confirm'))
+		{
+            $user->email    = $request->input('email');
+        } else 
+        {
+            return Redirect::back()->withErrors(['msg' => 'email not match']);
+        } 
+		if($request->input('password') == $request->input('password_confirm'))
+		{
+			$user->password = $request->input('password');
+		} else 
+        {
+            return Redirect::back()->withErrors(['msg' => 'password not match']);
+        }
+        if($request->file('logo')){
+            $file        = $request->file('logo');
+            $file_name   = date('YmdHi').$file->getClientOriginalName();
+            $user->image = $file_name;
+        }
+        $user->type   = 0;
+        $otp = mt_rand(111111,999999);
+        $user->otp = $otp;
         $user->status = 0;
         $user->save();
 
@@ -59,22 +99,32 @@ class CompanyController extends Controller
         $company->ice               = $request->input('ice');
         $company->cnss              = $request->input('cnss');
 
-        if($request->file('logo')){
-            $file= $request->file('logo');
-            $filename= date('YmdHi').$file->getClientOriginalName();
-            $file-> move(public_path('public/Image'), $filename);
+        if($request->file('logo'))
+        {
+            $file = $request->file('logo');
+            $filename = date('YmdHi').$file->getClientOriginalName();
+            $file-> move(public_path('/images'), $filename);
             $company->logo = $filename;
         }
 
-        if($request->file('status')){
+        if($request->file('status'))
+        {
             $file= $request->file('status');
             $filename= date('YmdHi').$file->getClientOriginalName();
-            $file-> move(public_path('public/Image'), $filename);
+            $file-> move(public_path('/images'), $filename);
             $company->status = $filename;
         }
 
         $company->save();
-        return redirect()->route('companies.index');
+                
+        $mailData = [
+            'title' => 'Events Moto',
+            'body'  => 'Welcome To Events Moto You Recive An OTP Code please',
+            'otp' => strval($otp)
+        ];        
+        Mail::to($request->input('email'))->send(new SendOtp($mailData));
+        session(['user_id' => $user_id, 'otp' => $otp]);
+        return redirect("validation");
     }
 
     /**

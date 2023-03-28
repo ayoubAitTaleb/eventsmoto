@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id('id_user');
             $table->string('admin_name');
             $table->string('club_name');
-            $table->string('email');
+            $table->string('email')->unique();
             $table->string('phone');
             $table->string('country');
             $table->string('city');

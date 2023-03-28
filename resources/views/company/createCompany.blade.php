@@ -1,13 +1,17 @@
 <form action="{{ route('companies.store') }}" method="post" enctype="multipart/form-data">
     @csrf
     Comercial Name<br>
-    <input type="text" name="commercial name"><br>
+    <input type="text" name="commercial_name"><br>
     company Name<br>
     <input type="text" name="company_name"><br>
     Email<br>
     <input type="email" name="email"><br>
+    Confirm Email<br>
+    <input type="email" name="email_confirm"><br>
     Password<br>
     <input type="password" name="password"><br>
+    Confirm Password<br>
+    <input type="password" name="password_confirm"><br>
     Phone<br>
     <select name="indicatif" id="indicatif">
         <option value="06">06</option>

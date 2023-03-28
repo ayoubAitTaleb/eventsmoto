@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id('id_user');
             $table->string('admin_name');
             $table->string('media_name');
-            $table->string('email');
+            $table->string('email')->unique();
             $table->string('phone');
             $table->string('social_reason');
             $table->string('country');

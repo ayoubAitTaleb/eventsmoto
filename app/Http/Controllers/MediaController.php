@@ -3,9 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Mail\SendOtp;
 use App\Models\Media;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Redirect;
 
 class MediaController extends Controller
 {
@@ -31,11 +34,44 @@ class MediaController extends Controller
      */
     public function store(Request $request)
     {
+        $request->validate([
+            'admin_name'    => 'required|min:3|max:60',
+            'media_name'    => 'required|min:3|max:60',
+            'email'         => 'required|email',
+            'indicatif'     => 'required',
+            'phone'         => 'required|min:6|max:20',
+            'country'       => 'required|min:2|max:30',
+            'city'          => 'required|min:2|max:30',
+            'address'       => 'required|min:2|max:100',
+            'social_reason' => 'required|min:2|max:10',
+            'logo'          => 'required|mimes:jpg,bmp,png',
+            'card_front'    => 'required|mimes:jpg,bmp,png',
+            'card_back'     => 'required|mimes:jpg,bmp,png'
+        ]);
         $user = new User();
-        $user->email    = $request->input('email');
-        $user->password = $request->input('password');
+        $user->name     = $request->input('admin_name');
+        if($request->input('email') == $request->input('email_confirm'))
+		{
+            $user->email    = $request->input('email');
+        } else 
+        {
+            return Redirect::back()->withErrors(['msg' => 'email not match']);
+        } 
+		if($request->input('password') == $request->input('password_confirm'))
+		{
+			$user->password = $request->input('password');
+		} else 
+        {
+            return Redirect::back()->withErrors(['msg' => 'password not match']);
+        }
+        if($request->file('logo')){
+            $file        = $request->file('logo');
+            $file_name   = date('YmdHi').$file->getClientOriginalName();
+            $user->image = $file_name;
+        }
         $user->type     = 0;
-        $user->otp      = 0;
+        $otp = mt_rand(111111,999999);
+        $user->otp = $otp;
         $user->status   = 0;
         $user->save();
 
@@ -57,29 +93,40 @@ class MediaController extends Controller
         $media->card_front  = $request->input('card_front');        
         $media->card_back   = $request->input('card_back');        
 
-        if($request->file('logo')){
+        if($request->file('logo'))
+        {
             $file     = $request->file('logo');
             $filename = date('YmdHi').$file->getClientOriginalName();
-            $file->move(public_path('public/Image'), $filename);
+            $file->move(public_path('/images'), $filename);
             $media->logo = $filename;
         }
 
-        if($request->file('card_front')){
+        if($request->file('card_front'))
+        {
             $file     = $request->file('card_front');
             $filename = date('YmdHi').$file->getClientOriginalName();
-            $file->move(public_path('public/Image'), $filename);
+            $file->move(public_path('/images'), $filename);
             $media->card_front = $filename;
         }
 
-        if($request->file('card_back')){
+        if($request->file('card_back'))
+        {
             $file     = $request->file('card_back');
             $filename = date('YmdHi').$file->getClientOriginalName();
-            $file->move(public_path('public/Image'), $filename);
+            $file->move(public_path('/images'), $filename);
             $media->card_back = $filename;
         }
 
         $media->save();
-        return redirect()->route('medias.index');
+        
+        $mailData = [
+            'title' => 'Events Moto',
+            'body'  => 'Welcome To Events Moto You Recive An OTP Code please',
+            'otp' => strval($otp)
+        ];        
+        Mail::to($request->input('email'))->send(new SendOtp($mailData));
+        session(['user_id' => $user_id, 'otp' => $otp]);
+        return redirect("validation");
     }
 
     /**

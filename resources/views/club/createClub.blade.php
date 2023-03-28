@@ -5,11 +5,15 @@
     Club Name<br>
     <input type="text" name="club_name"><br>
     Email<br>
+    <input type="email" name="email_confirm"><br>
+    Confirm Email<br>
     <input type="email" name="email"><br>
     Password<br>
     <input type="password" name="password"><br>
+    Password Confirm<br>
+    <input type="password" name="password_confirm"><br>
     Phone<br>
-    <select id="phone" name="phone">
+    <select id="phone" name="indicatif">
         <option value="06">06</option>
     </select><br>
     <input type="text" name="phone"><br>

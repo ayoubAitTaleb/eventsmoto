@@ -15,11 +15,11 @@ return new class extends Migration
             $table->id('id_user');
             $table->string('first_name');
             $table->string('family_name');
-            $table->string('email');
+            $table->string('email')->unique();
             $table->string('phone');
             $table->string('country');
             $table->string('city');
-            $table->boolean('member');
+            $table->string('address');
             $table->string('moto_type');
             $table->string('brand');
             $table->text('description');

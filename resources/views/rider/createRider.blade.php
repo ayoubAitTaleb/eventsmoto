@@ -6,8 +6,12 @@
     <input type="text" name="family_name"><br>
     Email<br>
     <input type="email" name="email"><br>
+    Confirm Email<br>
+    <input type="email" name="email_confirm"><br>
     Password<br>
     <input type="password" name="password"><br>
+    Confirm Password<br>
+    <input type="password" name="password_confirm"><br>
     Phone<br>
     <select name="indicatif" id="indicatif">
         <option value="06">06</option>
@@ -23,22 +27,16 @@
     </select>
     <br>
     Adresse<br>
-    <input type="text" name="address" id="address">
-    <br>
-    Mumber Of Club<br>
-    <select name="member" id="member">
-        <option value="0">no</option>
-        <option value="1">yes</option>
-    </select>
+    <textarea name="address"></textarea>
     <br>
     Type Of Motorbike/Scooter<br>
-    <select name="moto_type" id="moto_type">
+    <select name="moto_type">
         <option value="roadster">morocco</option>
     </select>
     <br>
     Brand Of Motorbike/Scooter
     <br>
-    <select name="brand" id="brand">
+    <select name="brand">
         <option value="honda">honda</option>
     </select>
     <br>

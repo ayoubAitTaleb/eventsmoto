@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Club;
 use App\Models\User;
 use Illuminate\Http\Request;
 
@@ -13,7 +12,8 @@ class UserController extends Controller
      */
     public function index()
     {
-        //
+        $user = User::all();
+        return $user;
     }
 
     /**
@@ -37,7 +37,7 @@ class UserController extends Controller
      */
     public function show(User $user)
     {
-        //
+        
     }
 
     /**

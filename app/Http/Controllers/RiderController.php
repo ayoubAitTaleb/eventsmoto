@@ -3,9 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Mail\SendOtp;
 use App\Models\Rider;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Redirect;
 
 class RiderController extends Controller
 {
@@ -14,8 +17,9 @@ class RiderController extends Controller
      */
     public function index()
     {
-        $riders = Rider::all();
+        $riders = Rider::all();        
         return $riders;
+
     }
 
     /**
@@ -31,14 +35,50 @@ class RiderController extends Controller
      */
     public function store(Request $request)
     {
+        $request->validate([
+            'first_name'    => 'required|min:3|max:30',
+            'family_name'   => 'required|min:3|max:30',
+            'email'         => 'required|email',
+            'indicatif'     => 'required',
+            'phone'         => 'required|min:6|max:20',
+            'country'       => 'required|min:2|max:30',
+            'city'          => 'required|min:2|max:30',
+            'address'       => 'required|min:3|max:100',
+            'brand'         => 'required|min:2|max:10',
+            'moto_type'     => 'required|min:2|max:30',
+            'photo'         => 'required|mimes:jpg,bmp,png'
+        ]);
+        
         $user = new User();
-        $user->email = $request->input('email');
-        $user->password = $request->input('password');
-        $user->type = 0;
-        $user->otp = 0;
-        $user->status = 0;
-        $user->save();
+        $user->name     = $request->input('first_name');
+        if($request->input('email') == $request->input('email_confirm'))
+		{
+            $user->email    = $request->input('email');
+        } else 
+        {
+            return Redirect::back()->withErrors(['msg' => 'email not match']);
+        } 
+		if($request->input('password') == $request->input('password_confirm'))
+		{
+			$user->password = $request->input('password');
+		} else 
+        {
+            return Redirect::back()->withErrors(['msg' => 'password not match']);
+        }
 
+        if($request->file('photo'))
+        {
+            $file        = $request->file('photo');
+            $file_name   = date('YmdHi').$file->getClientOriginalName();
+            $user->image = $file_name;
+        }
+
+        $user->type = 0;
+        $otp = mt_rand(111111,999999);
+        $user->otp = $otp;
+        $user->status = 0;
+
+        $user->save();
         $user_id = DB::getPdo()->lastInsertId(); // collect last id registred on DB
 
         $rider = new Rider();
@@ -46,24 +86,35 @@ class RiderController extends Controller
         $rider->first_name  = $request->input('first_name');
         $rider->family_name = $request->input('family_name');
         $rider->email       = $request->input('email');
-        $indicatif          = $request->input('indicatif');        
+        $indicatif          = $request->input('indicatif');
         $rider->phone       = "(+".$indicatif.")".$request->input('phone');
         $rider->country     = $request->input('country');
         $rider->city        = $request->input('city');
-        $rider->member      = $request->input('member');
+        $rider->address     = $request->input('address');
         $rider->brand       = $request->input('brand');
         $rider->moto_type   = $request->input('moto_type');
-        $rider->description = $request->input('description');        
+        $rider->description = $request->input('description');
 
-        if($request->file('photo')){
+        if($request->file('photo'))
+        {
             $file     = $request->file('photo');
-            $filename = date('YmdHi').$file->getClientOriginalName();
-            $file->move(public_path('public/Image'), $filename);
-            $rider->photo = $filename;
+            $file_name = date('YmdHi').$file->getClientOriginalName();
+            $file->move(public_path('/images'), $file_name);
+            $rider->photo = $file_name;
         }
 
         $rider->save();
-        return redirect()->route('riders.index');
+
+        $mailData = [
+            'title' => 'Events Moto',
+            'body'  => 'Welcome To Events Moto You Recive An OTP Code please',
+            'otp' => strval($otp)
+        ];
+        
+        Mail::to($request->input('email'))->send(new SendOtp($mailData));
+        session(['user_id' => $user_id, 'otp' => $otp]);
+        return redirect("validation");
+        
     }
 
     /**
@@ -71,7 +122,7 @@ class RiderController extends Controller
      */
     public function show(string $id)
     {
-        //
+        
     }
 
     /**
