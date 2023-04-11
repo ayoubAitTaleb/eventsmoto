@@ -1,4 +1,4 @@
-<!doctype html>
+{{-- <!doctype html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 <head>
     <meta charset="utf-8">
@@ -12,6 +12,8 @@
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
     <link href="https://fonts.bunny.net/css?family=Nunito" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
 
     <!-- Scripts -->
     @vite(['resources/sass/app.scss', 'resources/js/app.js'])
@@ -77,4 +79,30 @@
         </main>
     </div>
 </body>
-</html>
+</html> --}}
+<!DOCTYPE html>
+    <html class="bg-color" lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+        <head>
+            <meta charset="UTF-8">
+            <meta http-equiv="X-UA-Compatible" content="IE=edge">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <link rel="icon" type="image/png" href="../app-assets/images/logo/logo.png"/>
+            <link rel="stylesheet" href="{{ URL::asset('css/pb.css') }}" />
+            <link rel="stylesheet" href="{{ URL::asset('css/slick.css') }}" />
+            <link rel="stylesheet" href="{{ URL::asset('css/slick-theme.css') }}" />
+            <link rel="stylesheet" href="{{ URL::asset('css/main.css') }}" />
+            <link rel="stylesheet" href="{{ URL::asset('css/style-register.css') }}" />
+            <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">
+            <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous"/>
+            <script src="{{ URL::asset('js/jquery.min.js')}}"></script>
+            <script src="{{ URL::asset('js/fontawesome.all.min.js')}}"></script>
+            <script src="{{ URL::asset('js/slick.min.js')}}"></script>
+            <script src="{{ URL::asset('js/main.js')}}"></script>
+            <title>Koulna Motard</title>
+        </head>
+        <body>
+            <main>
+                @yield('content')
+            </main>
+        </body>
+    </html>

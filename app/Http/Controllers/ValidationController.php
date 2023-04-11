@@ -63,7 +63,9 @@ class ValidationController extends Controller
         {
             $user->status = 1;
             $user->save();
-            return redirect('/');
+            $request->session()->forget(['user_id', 'otp']);
+            $request->session()->flush();
+            return redirect('/dashboard');
         }
         else 
         {

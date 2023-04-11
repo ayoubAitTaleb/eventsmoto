@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('clubs', function (Blueprint $table) {
-            $table->id('id_user');
+            $table->id();
             $table->string('admin_name');
             $table->string('club_name');
             $table->string('email')->unique();
@@ -20,7 +20,7 @@ return new class extends Migration
             $table->string('country');
             $table->string('city');
             $table->string('address');
-            $table->text('description');
+            $table->text('description')->nullable();
             $table->string('logo');
             $table->string('rec_def');
             $table->timestamps();

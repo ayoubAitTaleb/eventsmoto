@@ -11,14 +11,10 @@ class MailController extends Controller
     /**
      * Display a listing of the resource.
      */
+    
     public function index()
     {
-        $mailData = [
-            'title' => 'Events Moto',
-            'body'  => 'Welcome To Events Moto You Recive An OTP Code please '
-        ];
-        Mail::to('ayoubredux@gmail.com')->send(new SendOtp($mailData));
-        dd('email send successfully');
+
     }
 
     /**

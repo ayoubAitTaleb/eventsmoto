@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('companies', function (Blueprint $table) {
-            $table->id('id_user');
+            $table->id();
             $table->string('commercial_name');
             $table->string('company_name');
             $table->string('email')->unique();
@@ -20,8 +20,8 @@ return new class extends Migration
             $table->string('country');
             $table->string('city');
             $table->string('address');
-            $table->text('description');
-            $table->integer('patente');
+            $table->text('description')->nullable();
+            $table->bigInteger('patente');
             $table->bigInteger('registre_commerce');
             $table->bigInteger('identifiant_fiscal');
             $table->bigInteger('ice');

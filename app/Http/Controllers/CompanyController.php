@@ -9,7 +9,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Hash;
 
 class CompanyController extends Controller
 {
@@ -39,42 +39,34 @@ class CompanyController extends Controller
         $request->validate([
             'commercial_name'    => 'required|min:3|max:60',
             'company_name'       => 'required|min:3|max:60',
-            'email'              => 'required|email',
+            'email'              => 'required|email|unique:users',
+            'password'           => 'required|min:6|max:10',
             'indicatif'          => 'required',
             'phone'              => 'required|min:6|max:20',
             'country'            => 'required|min:2|max:30',
-            'city'               => 'required|min:2|max:30',
+            'city'               => 'required|min:3|max:30',
             'address'            => 'required|min:2|max:100',
             'patente'            => 'required|min:2|max:20',
             'registre_commerce'  => 'required|min:2|max:30',
             'identifiant_fiscal' => 'required|min:2|max:30',
-            'ice'                => 'required|min:2|max:30',
-            'cnss'               => 'required|min:2|max:30',
+            'ice'                => 'required|min:6|max:30',
+            'cnss'               => 'required|min:6|max:30',
+            'description'        => 'max:500',
             'logo'               => 'required|mimes:jpg,bmp,png',
-            'status'             => 'required|mimes:jpg,bmp,png'
+            'status'             => 'required|mimes:jpg,bmp,png,pdf'
         ]);
         $user = new User();
         $user->name     = $request->input('commercial_name');
-        if($request->input('email') == $request->input('email_confirm'))
-		{
-            $user->email    = $request->input('email');
-        } else 
-        {
-            return Redirect::back()->withErrors(['msg' => 'email not match']);
-        } 
-		if($request->input('password') == $request->input('password_confirm'))
-		{
-			$user->password = $request->input('password');
-		} else 
-        {
-            return Redirect::back()->withErrors(['msg' => 'password not match']);
-        }
+		$user->email    = $request->input('email');
+		$user->password = Hash::make($request->input('password'));
+
         if($request->file('logo')){
             $file        = $request->file('logo');
             $file_name   = date('YmdHi').$file->getClientOriginalName();
-            $user->image = $file_name;
+            $user->avatar = $file_name;
         }
-        $user->type   = 0;
+        
+        $user->type   = 1; // 1 = company
         $otp = mt_rand(111111,999999);
         $user->otp = $otp;
         $user->status = 0;

@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('riders', function (Blueprint $table) {
-            $table->id('id_user');
+            $table->id();
             $table->string('first_name');
             $table->string('family_name');
             $table->string('email')->unique();
@@ -22,7 +22,7 @@ return new class extends Migration
             $table->string('address');
             $table->string('moto_type');
             $table->string('brand');
-            $table->text('description');
+            $table->text('description')->nullable();
             $table->string('photo');
             $table->timestamps();
         });

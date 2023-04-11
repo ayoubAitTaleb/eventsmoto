@@ -4,12 +4,18 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+    
     public function index()
     {
         $user = User::all();
@@ -35,9 +41,11 @@ class UserController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(User $user)
+    public function show(User $id)
     {
-        
+        $user = User::find($id);
+        $type = strval(Auth::user()->type);
+        return view('dashboard.mainProfile', ['user' => $user, 'type' => $type]);
     }
 
     /**

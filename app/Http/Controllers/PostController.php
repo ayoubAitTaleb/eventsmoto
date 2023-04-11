@@ -4,16 +4,21 @@ namespace App\Http\Controllers;
 
 use App\Models\Post;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class PostController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+    
     public function index()
     {
-        $posts = Post::all();
-        return $posts;
+        // 
     }
 
     /**
@@ -29,13 +34,14 @@ class PostController extends Controller
      */
     public function store(Request $request)
     {
+        $request->validate([
+            'description' => 'max:500',
+            'image'       => 'required|mimes:jpg,bmp,png'
+        ]);
         $post = new Post();
-        $post->title = $request->title;
         $post->id_user = 1;
-        $post->category = $request->category;
-        $post->slug = $request->slug;
-        $post->status = $request->status;
-        $post->content = $request->content;
+        $post->description = $request->description;
+        $post->id_user = Auth::user()->id_user;
         if($request->file('image'))
         {
             $file     = $request->file('image');
@@ -44,7 +50,7 @@ class PostController extends Controller
             $post->image = $filename;
         }
         $post->save();
-        return redirect("posts");
+        return redirect("dashboard");
     }
 
     /**

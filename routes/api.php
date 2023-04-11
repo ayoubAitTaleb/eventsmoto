@@ -2,6 +2,15 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\ClubController;
+use App\Http\Controllers\MailController;
+use App\Http\Controllers\PostController;
+use App\Http\Controllers\UserController;
+use App\Http\Controllers\EventController;
+use App\Http\Controllers\MediaController;
+use App\Http\Controllers\RiderController;
+use App\Http\Controllers\CompanyController;
+use App\Http\Controllers\ValidationController;
 
 /*
 |--------------------------------------------------------------------------

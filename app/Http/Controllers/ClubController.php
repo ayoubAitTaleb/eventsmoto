@@ -9,8 +9,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Support\Facades\Redirect;
-use PhpParser\Node\Stmt\Echo_;
+use Illuminate\Support\Facades\Hash;
 
 class ClubController extends Controller
 {
@@ -20,8 +19,7 @@ class ClubController extends Controller
     public function index()
     {
         $clubs = Club::all();
-        // return $clubs;
-        return view('club.listClub');
+        return $clubs;
     }
 
     /**
@@ -36,55 +34,42 @@ class ClubController extends Controller
      * Store a newly created resource in storage.
      */
     public function store(Request $request): RedirectResponse
-    {
-        
+    {        
         $request->validate([
             'admin_name'    => 'required|min:3|max:60',
             'club_name'     => 'required|min:3|max:60',
-            'email'         => 'required|email',
+            'email'         => 'required|email|unique:users',
+            'password'      => 'required|min:6|max:10',
             'indicatif'     => 'required',
             'phone'         => 'required|min:6|max:20',
             'country'       => 'required|min:2|max:30',
             'city'          => 'required|min:2|max:30',
             'address'       => 'required|min:2|max:100',
+            'description'   => 'max:500',
             'logo'          => 'required|mimes:jpg,bmp,png',
-            'rec_def'       => 'required|mimes:jpg,bmp,png'
+            'rec_def'       => 'required|mimes:jpg,bmp,png,pdf'
         ]);
-
+        
         $user = new User();
         $user->name     = $request->input('admin_name');
+        $user->email    = $request->input('email');
+        $user->password = Hash::make($request->input('password'));
 
-        if($request->input('email') == $request->input('email_confirm'))
-		{
-            $user->email    = $request->input('email');
-        } else 
-		{
-            return Redirect::back()->withErrors(['msg' => 'email not match']);
-        } 
-		if($request->input('password') == $request->input('password_confirm'))
-		{
-			$user->password = $request->input('password');
-		} else 
-        {
-            return Redirect::back()->withErrors(['msg' => 'password not match']);
-        } 
+            if($request->file('logo'))
+            {
+                $file        = $request->file('logo');
+                $file_name   = date('YmdHi').$file->getClientOriginalName();
+                $user->avatar = $file_name;
+            }
 
-        if($request->file('logo'))
-		{
-            $file        = $request->file('logo');
-            $file_name   = date('YmdHi').$file->getClientOriginalName();
-            $user->image = $file_name;
-        }
-
-        $user->type = 0;
-        $otp = mt_rand(000000,999999);
-        
+        $user->type = 0; // 0 = club
+        $otp = mt_rand(000000,999999);            
         $user->otp = $otp;
         $user->status = 0;
         $user->save();
 
         $user_id = DB::getPdo()->lastInsertId(); // collect last id registred on DB
-
+        
         $club = new Club();
         $club->id_user      = $user_id;
         $club->admin_name   = $request->input('admin_name');
