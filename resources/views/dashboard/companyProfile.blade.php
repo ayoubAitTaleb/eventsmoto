@@ -17,7 +17,12 @@
                                 <div class="post-input">
                                     <form action="{{route('posts.store')}}" method="post" enctype="multipart/form-data">
                                         @csrf
-                                        <textarea name="description" cols="30" rows="5" class="form-control bg-transparent" placeholder="Please type what you want...."></textarea>                                   
+                                        <textarea name="description" cols="30" rows="5" class="form-control bg-transparent @error('description') is-invalid @enderror" placeholder="Please type what you want...."></textarea>
+                                        @error('description')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                        @enderror                                   
                                         <a href="javascript:void(0);" class="btn btn-primary light mr-1 px-3" data-toggle="modal" data-target="#cameraModal"><i class="fa fa-camera m-0"></i> </a>
                                         <div class="modal fade" id="cameraModal">
                                             <div class="modal-dialog modal-dialog-centered" role="document">
@@ -33,7 +38,7 @@
                                                                 <span class="input-group-text">Upload</span>
                                                             </div>
                                                             <div class="custom-file">
-                                                                <input name="image" type="file" class="custom-file-input">
+                                                                <input name="image" type="file" class="custom-file-input @error('image') is-invalid @enderror">
                                                                 <label class="custom-file-label">Choose file</label>
                                                             </div>
                                                         </div>
@@ -42,15 +47,12 @@
                                             </div>
                                         </div>
                                         <button type="submit" class="btn btn-primary">Post</button>
+                                        @error('image')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                        @enderror
                                     </form>
-                                </div>
-                                <div class="profile-uoloaded-post border-bottom-1 pb-5">
-                                    <img src="images/profile/8.jpg" alt="" class="img-fluid w-100">
-                                    <a class="post-title" href="post-details.html"><h3 class="text-black">Collection of textile samples lay spread</h3></a>
-                                    <p>A wonderful serenity has take possession of my entire soul like these sweet morning of spare which enjoy whole heart.A wonderful serenity has take possession of my entire soul like these sweet morning
-                                        of spare which enjoy whole heart.</p>
-                                    <button class="btn btn-primary mr-2"><span class="mr-2"><i class="fa fa-heart"></i></span>Like</button>
-                                    <button class="btn btn-secondary" data-toggle="modal" data-target="#replyModal"><span class="mr-2"><i class="fa fa-reply"></i></span>Reply</button>
                                 </div>
                             </div>
                         </div>
