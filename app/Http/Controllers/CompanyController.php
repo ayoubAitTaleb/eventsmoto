@@ -7,9 +7,10 @@ use App\Mail\SendOtp;
 use App\Models\Company;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Support\Facades\Hash;
 
 class CompanyController extends Controller
 {
@@ -79,8 +80,8 @@ class CompanyController extends Controller
         $company->commercial_name   = $request->input('commercial_name');
         $company->company_name      = $request->input('company_name');
         $company->email             = $request->input('email');
-        $indicatif                  = $request->input('indicatif');
-        $company->phone             = "(+".$indicatif.")".$request->input('phone');
+        $company->indicatif         = $request->input('indicatif');
+        $company->phone             = $request->input('phone');
         $company->country           = $request->input('country');
         $company->city              = $request->input('city');
         $company->address           = $request->input('address');
@@ -138,9 +139,25 @@ class CompanyController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Company $company)
+    public function update(Request $request, string $id)
     {
-        //
+        $company = Company::findOrFail($id);
+        $company->commercial_name   = $request->input('commercial_name');
+        $company->company_name      = $request->input('company_name');
+        $company->email             = $request->input('email');
+        $company->indicatif         = $request->input('indicatif');
+        $company->phone             = $request->input('phone');
+        $company->country           = $request->input('country');
+        $company->city              = $request->input('city');
+        $company->address           = $request->input('address');
+        $company->description       = $request->input('description');
+        $company->patente           = $request->input('patente');
+        $company->registre_commerce = $request->input('registre_commerce');
+        $company->identifiant_fiscal= $request->input('identifiant_fiscal');
+        $company->ice               = $request->input('ice');
+        $company->cnss              = $request->input('cnss');
+        $company->save();
+        return redirect()->back();
     }
 
     /**

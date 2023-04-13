@@ -18,8 +18,6 @@ class RiderController extends Controller
 
     public function index()
     {
-        $riders = Rider::all();        
-        return $riders;
 
     }
 
@@ -77,8 +75,8 @@ class RiderController extends Controller
         $rider->first_name  = $request->input('first_name');
         $rider->family_name = $request->input('family_name');
         $rider->email       = $request->input('email');
-        $indicatif          = $request->input('indicatif');
-        $rider->phone       = "(+".$indicatif.")".$request->input('phone');
+        $rider->indicatif    = $request->input('indicatif');
+        $rider->phone       = $request->input('phone');
         $rider->country     = $request->input('country');
         $rider->city        = $request->input('city');
         $rider->address     = $request->input('address');
@@ -129,7 +127,18 @@ class RiderController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $rider = Rider::findOrFail($id);
+        $rider->first_name   = $request->input('first_name');
+        $rider->family_name   = $request->input('family_name');
+        $rider->email        = $request->input('email');
+        $rider->indicatif    = $request->input('indicatif');       
+        $rider->phone        = $request->input('phone');
+        $rider->country      = $request->input('country');
+        $rider->city         = $request->input('city');
+        $rider->address      = $request->input('address');
+        $rider->description  = $request->input('description');
+        $rider->save();
+        return redirect()->back();
     }
 
     /**

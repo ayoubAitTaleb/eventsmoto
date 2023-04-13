@@ -7,9 +7,10 @@ use App\Models\User;
 use App\Mail\SendOtp;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Support\Facades\Hash;
 
 class ClubController extends Controller
 {
@@ -55,12 +56,12 @@ class ClubController extends Controller
         $user->email    = $request->input('email');
         $user->password = Hash::make($request->input('password'));
 
-            if($request->file('logo'))
+           if($request->file('logo'))
             {
                 $file        = $request->file('logo');
                 $file_name   = date('YmdHi').$file->getClientOriginalName();
                 $user->avatar = $file_name;
-            }
+            } 
 
         $user->type = 0; // 0 = club
         $otp = mt_rand(000000,999999);            
@@ -75,8 +76,8 @@ class ClubController extends Controller
         $club->admin_name   = $request->input('admin_name');
         $club->club_name    = $request->input('club_name');
         $club->email        = $request->input('email');
-        $indicatif          = $request->input('indicatif');        
-        $club->phone        = "(+".$indicatif.")".$request->input('phone');
+        $club->indicatif    = $request->input('indicatif');        
+        $club->phone        = $request->input('phone');
         $club->country      = $request->input('country');
         $club->city         = $request->input('city');
         $club->address      = $request->input('address');
@@ -129,9 +130,30 @@ class ClubController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Club $club)
+    public function update(Request $request, string $id)
     {
-        //
+        $club = Club::findOrFail($id);
+        $club->admin_name   = $request->input('admin_name');
+        $club->club_name    = $request->input('club_name');
+        $club->email        = $request->input('email');
+        $club->indicatif    = $request->input('indicatif');       
+        $club->phone        = $request->input('phone');
+        $club->country      = $request->input('country');
+        $club->city         = $request->input('city');
+        $club->address      = $request->input('address');
+        $club->description  = $request->input('description');
+        if($request->hasFile('logo')){
+            $destination = public_path('images/' . $club->logo);
+            if(File::exists($destination)){
+                File::delete($destination);
+            }
+            $file     = $request->file('logo');
+            $filename = date('YmdHi').$file->getClientOriginalName();
+            $file->move(public_path('/images'), $filename);
+            $club->logo = $filename;
+        }
+        $club->save();
+        return redirect()->back();
     }
 
     /**

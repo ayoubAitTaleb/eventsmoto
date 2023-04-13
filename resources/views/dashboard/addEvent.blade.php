@@ -51,19 +51,54 @@
                                 </span>
                             @enderror
                         <label class="form-label">Description </label>
-                        <textarea name="description" cols="30" rows="10" class="form-control" maxlength="500" class="form-control @error('description') is-invalid @enderror"></textarea>
+                        <textarea name="description" cols="30" rows="3" class="form-control" maxlength="500" class="form-control @error('description') is-invalid @enderror"></textarea>
                             @error('description')
                                 <span class="invalid-feedback" role="alert">
                                     <strong>{{ $message }}</strong>
                                 </span>
                             @enderror
-                        <label class="form-label">Image</label><br>
-                        <input required="required" class="form-control @error('image') is-invalid @enderror" name="image" type="file" multiple accept="image/*,video/*">
-                            @error('image')
+                        <label class="form-label">Image Cover</label><br>
+                        <input required="required" class="form-control @error('cover') is-invalid @enderror" name="cover" type="file" multiple accept="image/*,video/*">
+                            @error('cover')
                                 <span class="invalid-feedback" role="alert">
                                     <strong>{{ $message }}</strong>
                                 </span>
                             @enderror
+                        <label class="form-label">Image 1</label><br>
+                        <input class="form-control @error('image_1') is-invalid @enderror" name="image_1" type="file" multiple accept="image/*,video/*">
+                        @error('image_1')
+                            <span class="invalid-feedback" role="alert">
+                                <strong>{{ $message }}</strong>
+                            </span>
+                        @enderror
+                        <label class="form-label">Image 2</label><br>
+                        <input class="form-control @error('image_2') is-invalid @enderror" name="image_2" type="file" multiple accept="image/*,video/*">
+                        @error('image_2')
+                            <span class="invalid-feedback" role="alert">
+                                <strong>{{ $message }}</strong>
+                            </span>
+                        @enderror
+                        <label class="form-label">Image 3</label><br>
+                        <input class="form-control @error('image_3') is-invalid @enderror" name="image_3" type="file" multiple accept="image/*,video/*">
+                        @error('image_3')
+                            <span class="invalid-feedback" role="alert">
+                                <strong>{{ $message }}</strong>
+                            </span>
+                        @enderror
+                        <label class="form-label">Image 4</label><br>
+                        <input class="form-control @error('image_4') is-invalid @enderror" name="image_4" type="file" multiple accept="image/*,video/*">
+                        @error('image_4')
+                            <span class="invalid-feedback" role="alert">
+                                <strong>{{ $message }}</strong>
+                            </span>
+                        @enderror
+                        <label class="form-label">Image 5</label><br>
+                        <input class="form-control @error('image_5') is-invalid @enderror" name="image_5" type="file" multiple accept="image/*,video/*">
+                        @error('image_5')
+                            <span class="invalid-feedback" role="alert">
+                                <strong>{{ $message }}</strong>
+                            </span>
+                        @enderror
                         <br>
                         <button class="mb-5 btn btn-danger btn-block" type="submit" tabindex="4">Envoyer</button>
                     </form>

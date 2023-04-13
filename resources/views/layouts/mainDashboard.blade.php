@@ -23,7 +23,9 @@
     
     <link rel="icon" type="image/png" sizes="16x16" href="images/favicon.png">
 	<link href="{{URL::asset('vendor/chartist/css/chartist.min.css')}}" rel="stylesheet">
+    <link href="{{URL::asset('vendor/datatables/css/jquery.dataTables.min.css')}}" rel="stylesheet">
     <link href="{{URL::asset('vendor/bootstrap-select/dist/css/bootstrap-select.min.css')}}" rel="stylesheet">
+    <link href="{{URL::asset('vendor/dropzone/dist/dropzone.css')}}" rel="stylesheet">
 	<link href="{{URL::asset('vendor/owl-carousel/owl.carousel.css')}}" rel="stylesheet">
 	<link href="{{URL::asset('vendor/lightgallery/css/lightgallery.min.css')}}" rel="stylesheet">
     <link href="{{URL::asset('css/style.css')}}" rel="stylesheet">
@@ -195,9 +197,11 @@
                 <div class="deznav">
                     <div class="deznav-scroll">
                         <div class="main-profile">
+                        <a href="{{URL('users/' . Auth::user()->id_user)}}">
                             <div class="image-bx">
                                 <img src="{{URL::asset('images/' . Auth::user()->avatar)}}" alt="events moto">
                             </div>
+                        </a>
                             <h5 class="name"><span class="font-w400">Hello,</span> {{Str::ucfirst(Auth::user()->name)}}</h5>
                         </div>
                         <ul class="metismenu" id="menu">
@@ -207,8 +211,7 @@
                                     <span class="nav-text">My Profile</span>
                                 </a>
                                 <ul aria-expanded="false">
-                                    <li><a href="app-profile.html">Edit Profile Information</a></li>
-                                    <li><a href="app-profile.html">Edit Profile Images</a></li>
+                                    <li><a href="{{URL('users/' . Auth::user()->id_user)}}">Show My Profile</a></li>
                                 </ul>
                             </li>
                             <li><a class="has-arrow ai-icon" href="javascript:void()" aria-expanded="false">
@@ -216,7 +219,7 @@
                                     <span class="nav-text">My Messages</span>
                                 </a>
                                 <ul aria-expanded="false">
-                                    <li><a href="app-profile.html">Send Message</a></li>
+                                    <li><a href="{{route('messages.create')}}">Send Message</a></li>
                                     <li><a href="app-profilhe.html" aria-expanded="false">Inbox<span class="badge badge-xs badge-danger">New</span></a></li>
                                 </ul>
                             </li>
@@ -277,6 +280,7 @@
         <!-- Required vendors -->
         <script src="{{URL::asset('vendor/global/global.min.js')}}"></script>
         <script src="{{URL::asset('vendor/bootstrap-select/dist/js/bootstrap-select.min.js')}}"></script>
+        <script src="{{URL::asset('vendor/dropzone/dist/dropzone.js')}}"></script>
         <script src="{{URL::asset('vendor/lightgallery/js/lightgallery-all.min.js')}}"></script>
         <script src="{{URL::asset('vendor/chart.js/Chart.bundle.min.js')}}"></script>
 
@@ -297,7 +301,11 @@
         <script src="{{URL::asset('js/custom.min.js')}}"></script>
         <script src="{{URL::asset('js/deznav-init.js')}}"></script>
         <script src="{{URL::asset('js/demo.js')}}"></script>
-        <script src="{{URL::asset('js/styleSwitcher.js')}}"></script>       
+        <script src="{{URL::asset('js/styleSwitcher.js')}}"></script>
+    <script src="js/custom.min.js"></script>
+	<script src="js/deznav-init.js"></script>
+    <script src="js/demo.js"></script>
+    <script src="js/styleSwitcher.js"></script>
 
     </body>
 </html>

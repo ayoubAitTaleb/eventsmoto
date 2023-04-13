@@ -51,15 +51,18 @@ class MediaController extends Controller
             'card_front'    => 'required|mimes:jpg,bmp,png',
             'card_back'     => 'required|mimes:jpg,bmp,png'
         ]);
+
         $user = new User();
         $user->name     = $request->input('admin_name');
         $user->email    = $request->input('email');
         $user->password = Hash::make($request->input('password'));
+
         if($request->file('logo')){
             $file        = $request->file('logo');
             $file_name   = date('YmdHi').$file->getClientOriginalName();
             $user->avatar = $file_name;
         }
+
         $user->type     = 2; // 3 = media
         $otp = mt_rand(111111,999999);
         $user->otp = $otp;
@@ -73,8 +76,8 @@ class MediaController extends Controller
         $media->admin_name  = $request->input('admin_name');
         $media->media_name  = $request->input('media_name');
         $media->email       = $request->input('email');
-        $indicatif          = $request->input('indicatif');        
-        $media->phone       = "(+".$indicatif.")".$request->input('phone');
+        $media->indicatif   = $request->input('indicatif');        
+        $media->phone       = $request->input('phone');
         $media->social_reason=$request->input('social_reason');
         $media->country     = $request->input('country');
         $media->city        = $request->input('city');
@@ -142,7 +145,18 @@ class MediaController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        dd($request);
+        $media = Media::findOrFail($id);
+        $media->admin_name   = $request->input('admin_name');
+        $media->media_name   = $request->input('media_name');
+        $media->email        = $request->input('email');
+        $media->indicatif    = $request->input('indicatif');       
+        $media->phone        = $request->input('phone');
+        $media->country      = $request->input('country');
+        $media->city         = $request->input('city');
+        $media->address      = $request->input('address');
+        $media->description  = $request->input('description');
+        $media->save();
+        return redirect()->back();
     }
 
     /**

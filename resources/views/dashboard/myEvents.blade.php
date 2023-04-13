@@ -7,10 +7,9 @@
                 <div class="card-body">
                     <h4 class="text-black fs-20 mb-">My Evenement</h4>
                     <div class="table-responsive">
-                        <table class="table style-1" id="ListDatatableView">
+                        <table class="table style-1" id="example3">
                             <thead>
-                                <tr>
-                                    
+                                <tr>                                    
                                     <th>image</th>
                                     <th>Name</th>
                                     <th>Type</th>
@@ -23,11 +22,12 @@
                             </thead>
                             <tbody>
                                 @foreach ($myEvents as $event)
-                                <tr>
-                                    
+                                <tr>                                    
                                     <td>
-                                        <div class="media style-1">
-                                            <img src="{{URL::asset('images/' . $event->image)}}" class="img-fluid mr-3" alt="events moto">                                            
+                                        <div class="media style-1">                                            
+                                            <a href="{{ route('events.show', $event->id) }}">
+                                                <img src="{{URL::asset('images/' . $event->cover)}}" class="rounded-circle" width="100" alt="events moto">                                         
+                                            </a>
                                         </div>
                                     </td>
                                     <td>
@@ -55,6 +55,7 @@
                                                 @method('DELETE')
                                                 <button type="submit" class="btn btn-rounded btn-danger btn-xs">Delete</button>
                                             </form>
+                                            <a href="{{ route('events.edit', $event->id) }}" class="btn btn-rounded btn-warning btn-xs mt-1">Edit</a>
                                         </div>                                                                           
                                     </td>
                                 </tr>                                

@@ -1,18 +1,18 @@
-<div class="col-xl-8">
+<div class="col-xl-12">
     <div class="card">
         <div class="card-body">
             <div class="profile-tab">
                 <div class="custom-tab-1">
                     <ul class="nav nav-tabs">
-                        <li class="nav-item"><a href="#add-post" data-toggle="tab" class="nav-link active show">Add Post</a>
+                        <li class="nav-item"><a href="#about-me" data-toggle="tab" class="nav-link active show">About Me</a>
                         </li>
-                        <li class="nav-item"><a href="#about-me" data-toggle="tab" class="nav-link">About Me</a>
+                        <li class="nav-item"><a href="#add-post" data-toggle="tab" class="nav-link">Add Post</a>
                         </li>
                         <li class="nav-item"><a href="#profile-settings" data-toggle="tab" class="nav-link">Setting</a>
                         </li>
                     </ul>
                     <div class="tab-content">
-                        <div id="add-post" class="tab-pane fade active show">
+                        <div id="add-post" class="tab-pane fade">
                             <div class="my-post-content pt-3">
                                 <div class="post-input">
                                     <form action="{{route('posts.store')}}" method="post" enctype="multipart/form-data">
@@ -53,6 +53,33 @@
                                         </span>
                                         @enderror
                                     </form>
+                                </div>
+                            </div>
+                            <div class="card">
+                                <div class="card-body">
+                                    <div class="profile-news">
+                                        <h5 class="text-primary d-inline">Our Latest Posts</h5>
+                                        @forelse ($myPosts as $mypost)
+                                        <div class="media pt-3 pb-3">                                                    
+                                            <img src="{{ URL::asset('images/' . $mypost->image) }}" alt="events moto" class="mr-3 rounded" width="75">
+                                            <div class="media-body">
+                                                <p class="mb-0">{{$mypost->description}}</p>
+                                                <form action="{{ route('posts.destroy', $mypost->id) }}" method="POST">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    <button type="submit" class="btn btn-danger btn-sm"><span class="mr-2"><i class="fa fa-trash"></i></span>Delete</button>
+                                                </form>
+                                            </div>
+                                        </div>
+                                        @empty                                            
+                                        <div class="alert alert-info alert-dismissible fade show mt-3">
+                                            <svg viewbox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" class="mr-2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
+                                            <strong>Info!</strong> You Have No Posts To Show.
+                                            <button type="button" class="close h-100" data-dismiss="alert" aria-label="Close"><span><i class="mdi mdi-close"></i></span>
+                                            </button>
+                                        </div>                                         
+                                        @endforelse                                               
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -166,53 +193,79 @@
                             <div class="pt-3">
                                 <div class="settings-form">
                                     <h4 class="text-primary">Account Setting</h4>
-                                    {{-- <form>
+                                    <form action="{{ route('companies.update', Auth::user()->company->id)}}" method="POST">
+                                        @csrf
+                                        @method('PATCH')
                                         <div class="form-row">
-                                            <div class="form-group col-md-6">
-                                                <label>Email</label>
-                                                <input type="email" placeholder="Email" class="form-control">
-                                            </div>
-                                            <div class="form-group col-md-6">
-                                                <label>Password</label>
-                                                <input type="password" placeholder="Password" class="form-control">
-                                            </div>
-                                        </div>
-                                        <div class="form-group">
-                                            <label>Address</label>
-                                            <input type="text" placeholder="1234 Main St" class="form-control">
-                                        </div>
-                                        <div class="form-group">
-                                            <label>Address 2</label>
-                                            <input type="text" placeholder="Apartment, studio, or floor" class="form-control">
-                                        </div>
-                                        <div class="form-row">
-                                            <div class="form-group col-md-6">
-                                                <label>City</label>
-                                                <input type="text" class="form-control">
+                                            <div class="form-group col-md-4">
+                                                <label>Commercial Name</label>
+                                                <input type="text" name="commercial_name" class="form-control" value="{{Auth::user()->company->commercial_name}}">
                                             </div>
                                             <div class="form-group col-md-4">
-                                                <label>State</label>
-                                                <select class="form-control default-select" id="inputState">
-                                                    <option selected="">Choose...</option>
-                                                    <option>Option 1</option>
-                                                    <option>Option 2</option>
-                                                    <option>Option 3</option>
-                                                </select>
+                                                <label>Company Name</label>
+                                                <input type="text" name="company_name" class="form-control" value="{{Auth::user()->company->company_name}}">
                                             </div>
-                                            <div class="form-group col-md-2">
-                                                <label>Zip</label>
-                                                <input type="text" class="form-control">
+                                            <div class="form-group col-md-4">
+                                                <label>Email</label>
+                                                <input type="email" name="email" class="form-control" value="{{Auth::user()->company->email}}">
                                             </div>
                                         </div>
-                                        <div class="form-group">
-                                            <div class="custom-control custom-checkbox">
-                                                <input type="checkbox" class="custom-control-input" id="gridCheck">
-                                                <label class="custom-control-label" for="gridCheck"> Check me out</label>
+                                        <div class="form-row">
+                                            <div class="form-group col-md-4">
+                                                <label>Indicatifs</label>
+                                                <x-indicatifs></x-indicatifs>
+                                            </div>
+                                            <div class="form-group col-md-4">
+                                                <label>Phone</label>
+                                                <input type="number" name="phone" class="form-control" value="{{Auth::user()->company->phone}}">
+                                            </div>
+                                            <div class="form-group col-md-4">
+                                                <label>Country</label>
+                                                <x-countries></x-countries>
                                             </div>
                                         </div>
-                                        <button class="btn btn-primary" type="submit">Sign
-                                            in</button>
-                                    </form> --}}
+                                        <div class="form-row">
+                                            <div class="form-group col-md-12">
+                                                <label>Address</label>
+                                                <input name="address" type="text" class="form-control @error('description') is-invalid @enderror" value="{{Auth::user()->company->address}}"></input>
+                                            </div>
+                                            
+                                        </div>
+                                        <div class="form-row">
+                                            <div class="form-group col-md-4">
+                                                <label>City</label>
+                                                <input type="text" name="city" class="form-control" value="{{Auth::user()->company->city}}">
+                                            </div>
+                                            <div class="form-group col-md-4">
+                                                <label>Registre Commerce</label>
+                                                <input name="registre_commerce" type="number" class="form-control @error('registre_commerce') is-invalid @enderror" value="{{Auth::user()->company->registre_commerce}}"></input>
+                                            </div>
+                                            <div class="form-group col-md-4">
+                                                <label>ID Fiscal</label>
+                                                <input type="number" name="identifiant_fiscal" class="form-control" value="{{Auth::user()->company->identifiant_fiscal}}">
+                                            </div>                                            
+                                        </div>
+                                        <div class="form-row">
+                                            <div class="form-group col-md-4">
+                                                <label>ICE</label>
+                                                <input name="ice" type="number" class="form-control @error('ice') is-invalid @enderror" value="{{Auth::user()->company->ice}}"></input>
+                                            </div>
+                                            <div class="form-group col-md-4">
+                                                <label>CNSS</label>
+                                                <input type="number" name="cnss" class="form-control" value="{{Auth::user()->company->cnss}}">
+                                            </div>
+                                            <div class="form-group col-md-4">
+                                                <label>Patente</label>
+                                                <input type="number" type="number" name="patente" class="form-control" value="{{Auth::user()->company->patente}}">
+                                            </div>
+                                        </div>
+                                        <div class="form-row">
+                                            <label>About The company</label>
+                                            <input type="text" name="description" class="form-control @error('description') is-invalid @enderror" value="{{Auth::user()->company->description}}"></input>
+                                        </div>
+                                        <br>
+                                        <button class="btn btn-primary btn-sm" type="submit">Update Profile</button>
+                                    </form>
                                 </div>
                             </div>
                         </div>

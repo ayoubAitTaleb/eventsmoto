@@ -5,6 +5,7 @@
 	<div class="container-fluid">
 		<div class="row">
 			<div class="col-xxl-12">
+				<h4 class="text-black fs-20 mb-3">Recent Events</h4>
 				<div class="row">
 					@foreach ($events as $event )						
 					<div class="col-sm-6">
@@ -116,16 +117,16 @@
 		</div>
 		<div class="col-xl-6 col-md-12 mx-auto">
 			@foreach ($posts as $post)
-			<div class="card text-center">
-				<div class="card-body">
-					<div class="profile-uoloaded-post pb-3">
-						<img src="{{URL::asset('images/' . $post->image)}}" alt="events moto" class="img-fluid w-10">
-						<p>{{$post->description}}</p>
-						<button class="btn btn-primary mr-2 btn-sm"><span class="mr-2"><i class="fa fa-heart"></i></span>Posted By {{Str::ucfirst($post->user->name)}}</button>
-						<button class="btn btn-secondary btn-sm" data-toggle="modal" data-target="#replyModal"><span class="mr-2"><i class="fa fa-reply"></i></span>{{$post->created_at}}</button>
-					</div>					
-				</div>				
-			</div>
+				<div class="card text-center">
+					<div class="card-body">
+						<div class="profile-uoloaded-post pb-3">
+							<img src="{{URL::asset('images/' . $post->image)}}" alt="events moto" class="img-fluid w-10">
+							<p>{{$post->description}}</p>
+							<button class="btn btn-primary mr-2 btn-sm"><span class="mr-2"><i class="fa fa-heart"></i></span>Posted By {{Str::ucfirst($post->user->name)}}</button>
+							<button class="btn btn-secondary btn-sm" data-toggle="modal" data-target="#replyModal"><span class="mr-2"><i class="fa fa-reply"></i></span>{{$post->created_at}}</button>
+						</div>					
+					</div>				
+				</div>
 			@endforeach				
 		</div>
 	</div>

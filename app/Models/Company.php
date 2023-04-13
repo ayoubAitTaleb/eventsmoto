@@ -11,6 +11,20 @@ class Company extends Model
 {
     use HasFactory;
 
+    protected $fillable = [
+        'admin_name',
+        'club_name',
+        'email',
+        'password',
+        'phone',
+        'country',
+        'city',
+        'address',
+        'description',
+        'logo',
+        'rec_def'
+    ];
+
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class, 'id_user');

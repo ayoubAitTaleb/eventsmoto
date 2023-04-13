@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Event;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\File;
 
 class EventController extends Controller
 {
@@ -43,8 +44,14 @@ class EventController extends Controller
             'city'          => 'required|min:2|max:30',
             'address'       => 'required|min:2|max:100',
             'description'   => 'max:500',
-            'image'         => 'required|mimes:jpg,bmp,png',
+            'cover'         => 'required|mimes:jpg,bmp,png',
+            'image_1'       => 'mimes:jpg,bmp,png',
+            'image_2'       => 'mimes:jpg,bmp,png',
+            'image_3'       => 'mimes:jpg,bmp,png',
+            'image_4'       => 'mimes:jpg,bmp,png',
+            'image_5'       => 'mimes:jpg,bmp,png'
         ]);
+
         $event = new Event();
         $event->name = $request->name;
         $event->id_user = Auth::user()->id_user;
@@ -55,13 +62,50 @@ class EventController extends Controller
         $event->address = $request->address;
         $event->description = $request->description;
         $event->status = 0;
-        if($request->file('image'))
+
+        if($request->file('cover'))
         {
-            $file     = $request->file('image');
+            $file     = $request->file('cover');
             $filename = date('YmdHi').$file->getClientOriginalName();
             $file->move(public_path('/images'), $filename);
-            $event->image = $filename;
+            $event->cover = $filename;
         }
+        if($request->file('image_1'))
+        {
+            $file     = $request->file('image_1');
+            $filename = date('YmdHi').$file->getClientOriginalName();
+            $file->move(public_path('/images'), $filename);
+            $event->image_1 = $filename;
+        }
+        if($request->file('image_2'))
+        {
+            $file     = $request->file('image_2');
+            $filename = date('YmdHi').$file->getClientOriginalName();
+            $file->move(public_path('/images'), $filename);
+            $event->image_2 = $filename;
+        }
+        if($request->file('image_3'))
+        {
+            $file     = $request->file('image_3');
+            $filename = date('YmdHi').$file->getClientOriginalName();
+            $file->move(public_path('/images'), $filename);
+            $event->image_3 = $filename;
+        }
+        if($request->file('image_4'))
+        {
+            $file     = $request->file('image_4');
+            $filename = date('YmdHi').$file->getClientOriginalName();
+            $file->move(public_path('/images'), $filename);
+            $event->image_4 = $filename;
+        }
+        if($request->file('image_5'))
+        {
+            $file     = $request->file('image_5');
+            $filename = date('YmdHi').$file->getClientOriginalName();
+            $file->move(public_path('/images'), $filename);
+            $event->image_5 = $filename;
+        }
+        
         $event->save();
         return redirect("dashboard");
     }
@@ -71,7 +115,8 @@ class EventController extends Controller
      */
     public function show(string $id)
     {
-
+        $event = Event::findOrFail($id);
+        return view('dashboard.showEvent', ['event' => $event]);
     }
     
     /**
@@ -79,7 +124,8 @@ class EventController extends Controller
      */
     public function edit(string $id)
     {
-        return view();
+        $event = Event::findOrFail($id);
+        return view('dashboard.editEvent', ['event' => $event]);
     }
     
     /**
@@ -87,7 +133,84 @@ class EventController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $event = Event::findOrFail($id);
+        $event->name = $request->name;
+        $event->type = $request->type;
+        $event->start_date = $request->start_date;
+        $event->end_date = $request->end_date;
+        $event->city = $request->city;
+        $event->address = $request->address;
+        $event->description = $request->description;
+
+        if($request->hasFile('cover')){
+            $destination = public_path('images/' . $event->cover);
+            if(File::exists($destination)){
+                File::delete($destination);
+            }
+            $file     = $request->file('cover');
+            $filename = date('YmdHi').$file->getClientOriginalName();
+            $file->move(public_path('/images'), $filename);
+            $event->cover = $filename;
+        }
+
+        if($request->hasFile('image_1')){
+            $destination = public_path('images/' . $event->image_1);
+            if(File::exists($destination)){
+                File::delete($destination);
+            }
+            $file     = $request->file('image_1');
+            $filename = date('YmdHi').$file->getClientOriginalName();
+            $file->move(public_path('/images'), $filename);
+            $event->image_1 = $filename;
+        }
+
+        if($request->hasFile('image_2')){
+            $destination = public_path('images/' . $event->image_2);
+            if(File::exists($destination)){
+                File::delete($destination);
+            }
+            $file     = $request->file('image_2');
+            $filename = date('YmdHi').$file->getClientOriginalName();
+            $file->move(public_path('/images'), $filename);
+            $event->image_2 = $filename;
+        }
+
+        if($request->hasFile('image_3')){
+            $destination = public_path('images/' . $event->image_3);
+            if(File::exists($destination))
+            {
+                File::delete($destination);
+            }
+            $file     = $request->file('image_3');
+            $filename = date('YmdHi').$file->getClientOriginalName();
+            $file->move(public_path('/images'), $filename);
+            $event->image_3 = $filename;
+        }
+
+        if($request->hasFile('image_4')){
+            $destination = public_path('images/' . $event->image_4);
+            if(File::exists($destination)){
+                File::delete($destination);
+            }
+            $file     = $request->file('image_4');
+            $filename = date('YmdHi').$file->getClientOriginalName();
+            $file->move(public_path('/images'), $filename);
+            $event->image_4 = $filename;
+        }
+
+        if($request->hasFile('image_5')){
+            $destination = public_path('images/' . $event->image_5);
+            if(File::exists($destination)){
+                File::delete($destination);
+            }
+            $file     = $request->file('image_5');
+            $filename = date('YmdHi').$file->getClientOriginalName();
+            $file->move(public_path('/images'), $filename);
+            $event->image_5 = $filename;
+        }
+
+        $event->save();
+        return redirect('events/myevents');
     }
     
     /**

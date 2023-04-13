@@ -11,7 +11,7 @@
             </div>
             <div class="card-body">
                 <div class="table-responsive">
-                    <table class="table style-1" id="ListDatatableView">
+                    <table class="table style-1" id="example3">
                         <thead>
                             <tr>
                                 <th>#</th>

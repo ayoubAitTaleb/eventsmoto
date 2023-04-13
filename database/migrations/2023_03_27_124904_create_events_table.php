@@ -21,7 +21,12 @@ return new class extends Migration
             $table->string('address');
             $table->text('description')->nullable();
             $table->boolean('status')->default(0);
-            $table->string('image');
+            $table->string('cover');
+            $table->string('image_1')->nullable();
+            $table->string('image_2')->nullable();
+            $table->string('image_3')->nullable();
+            $table->string('image_4')->nullable();
+            $table->string('image_5')->nullable();
             $table->timestamps();
         });
     }

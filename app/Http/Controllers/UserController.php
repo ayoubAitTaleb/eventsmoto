@@ -6,6 +6,7 @@ use App\Models\Post;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\File;
 
 class UserController extends Controller
 {
@@ -61,9 +62,21 @@ class UserController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, User $user)
+    public function update(Request $request, string $id)
     {
-        //
+        $user = User::findOrFail($id);
+        if($request->hasFile('avatar')){
+            $destination = public_path('images/' . $user->avatar);
+            if(File::exists($destination)){
+                File::delete($destination);
+            }
+            $file     = $request->file('avatar');
+            $filename = date('YmdHi').$file->getClientOriginalName();
+            $file->move(public_path('/images'), $filename);
+            $user->avatar = $filename;
+        }
+        $user->save();
+        return redirect()->back();
     }
 
     /**

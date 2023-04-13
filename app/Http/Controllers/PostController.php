@@ -99,6 +99,8 @@ class PostController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $member = Post::findOrFail($id);
+        $member->delete();
+        return redirect()->back();
     }
 }

@@ -11,7 +11,7 @@
         </div>
         <!-- Login-->
         <div class="login-form">           
-            <h2 class="card-title font-weight-bold mb-1">Welcome to KOLNA MOTARD! 👋</h2>
+            <h2 class="card-title font-weight-bold mb-1">Welcome to Events Moto! 👋</h2>
             <p class="card-text mb-2">Please sign-in to your account and start the adventure</p>
             <form method="POST" action="{{ route('login') }}">
                 @csrf                

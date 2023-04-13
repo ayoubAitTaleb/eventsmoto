@@ -12,6 +12,7 @@ use App\Http\Controllers\MediaController;
 use App\Http\Controllers\RiderController;
 use App\Http\Controllers\MemberController;
 use App\Http\Controllers\CompanyController;
+use App\Http\Controllers\MessageController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ValidationController;
 
@@ -41,6 +42,7 @@ Route::resource('events', EventController::class);
 Route::resource('posts', PostController::class);
 Route::resource('dashboard', DashboardController::class);
 Route::resource('members', MemberController::class);
+Route::resource('messages', MessageController::class);
 
 Route::get('send-mail', [MailController::class, 'index']);
 

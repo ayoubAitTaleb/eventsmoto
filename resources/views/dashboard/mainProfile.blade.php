@@ -27,31 +27,6 @@
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-xl-4">
-						<div class="row">
-							<div class="col-xl-12">
-								<div class="card">
-									<div class="card-body">
-										<div class="profile-news">
-											<h5 class="text-primary d-inline">Our Latest Posts</h5>
-											<div class="media pt-3 pb-3">                                                    
-                                                @forelse ($myPosts as $mypost)
-												<img src="{{ URL::asset('images/' . $mypost->image) }}" alt="events moto" class="mr-3 rounded" width="75">
-												<div class="media-body">
-                                                    <p class="mb-0">{{$mypost->description}}</p>                                                    
-						                            <button class="btn btn-wrning mr-2 btn-sm"><span class="mr-2"><i class="fa fa-eye-slash"></i></span>Hide</button>
-						                            <button class="btn btn-danget btn-sm"><span class="mr-2"><i class="fa fa-trash"></i></span>Delete</button>
-												</div>
-                                                @empty
-                                                    <h5>You Have No Posts To Show</h5>                                               
-                                                @endforelse                                               
-											</div>
-										</div>
-									</div>
-								</div>
-							</div>
-						</div>
-                    </div>
                     {{-- profile section --}}
                         @switch($type)
                             @case(0)

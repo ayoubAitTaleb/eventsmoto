@@ -1,18 +1,18 @@
-<div class="col-xl-8">
+<div class="col-xl-12">
     <div class="card">
         <div class="card-body">
             <div class="profile-tab">
                 <div class="custom-tab-1">
                     <ul class="nav nav-tabs">
-                        <li class="nav-item"><a href="#add-post" data-toggle="tab" class="nav-link active show">Add Post</a>
+                        <li class="nav-item"><a href="#about-me" data-toggle="tab" class="nav-link active show">About Me</a>
                         </li>
-                        <li class="nav-item"><a href="#about-me" data-toggle="tab" class="nav-link">About Me</a>
+                        <li class="nav-item"><a href="#add-post" data-toggle="tab" class="nav-link">Add Post</a>
                         </li>
                         <li class="nav-item"><a href="#profile-settings" data-toggle="tab" class="nav-link">Setting</a>
                         </li>
                     </ul>
                     <div class="tab-content">
-                        <div id="add-post" class="tab-pane fade active show">
+                        <div id="add-post" class="tab-pane fade">
                             <div class="my-post-content pt-3">
                                 <div class="post-input">
                                     <form action="{{route('posts.store')}}" method="post" enctype="multipart/form-data">
@@ -55,8 +55,35 @@
                                     </form>
                                 </div>
                             </div>
+                            <div class="card">
+                                <div class="card-body">
+                                    <div class="profile-news">
+                                        <h5 class="text-primary d-inline">Our Latest Posts</h5>
+                                        @forelse ($myPosts as $mypost)
+                                        <div class="media pt-3 pb-3">                                                    
+                                            <img src="{{ URL::asset('images/' . $mypost->image) }}" alt="events moto" class="mr-3 rounded" width="75">
+                                            <div class="media-body">
+                                                <p class="mb-0">{{$mypost->description}}</p>
+                                                <form action="{{ route('posts.destroy', $mypost->id) }}" method="POST">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    <button type="submit" class="btn btn-danger btn-sm"><span class="mr-2"><i class="fa fa-trash"></i></span>Delete</button>
+                                                </form>
+                                            </div>
+                                        </div>
+                                        @empty                                            
+                                        <div class="alert alert-info alert-dismissible fade show mt-3">
+                                            <svg viewbox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" class="mr-2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
+                                            <strong>Info!</strong> You Have No Posts To Show.
+                                            <button type="button" class="close h-100" data-dismiss="alert" aria-label="Close"><span><i class="mdi mdi-close"></i></span>
+                                            </button>
+                                        </div>                                         
+                                        @endforelse                                               
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                        <div id="about-me" class="tab-pane fade">
+                        <div id="about-me" class="tab-pane fade active show">
                             <div class="profile-about-me">
                                 <div class="pt-4 border-bottom-1 pb-3">
                                     <h4 class="text-primary">About Me</h4>

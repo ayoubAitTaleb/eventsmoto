@@ -7,7 +7,7 @@
                 <div class="card-body">
                     <h4 class="text-black fs-20 mb-">All Clubs</h4>
                     <div class="table-responsive">
-                        <table class="table style-1" id="ListDatatableView">
+                        <table class="table style-1" id="example3">
                             <thead>
                                 <tr>
                                     <th>#</th>
